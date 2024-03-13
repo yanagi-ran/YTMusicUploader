@@ -4,6 +4,9 @@
 ベースは [ytmusicapi](https://ytmusicapi.readthedocs.io/en/stable/index.html) を使用しています。  
 GUIで簡単にファイル選択できるようにしただけってことです。  
 ## 使い方
+### 必要なもの
+Python  
+
 ### インストール
 リリースページからzipファイルをダウンロード・展開してください。  
 中にある `setup.bat` を実行してください。  
