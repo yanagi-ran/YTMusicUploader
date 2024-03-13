@@ -1,5 +1,6 @@
 import flet as ft
 import os
+import gettext
 import time
 from ytmusicapi import YTMusic
 files = []
