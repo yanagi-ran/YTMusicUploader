@@ -21,12 +21,20 @@ def main(page:ft.Page):
     page.window_center()
     page.padding = 24
 
+    def clear_files(e):
+        global files
+        files.clear()
+        selected_files.value = "\n".join(files)
+        selected_files.update()
+
     def sel_files(e:ft.FilePickerResultEvent):
         global files
-        selected_files.value = (
-            f"\n".join(map(lambda f: f.name,e.files)) if e.files else ""
-        )
-        files = [f.path for f in e.files] if e.files else []
+        if e.files:
+            for f in e.files:
+                files.append(f.path)
+        else:
+            pass
+        selected_files.value = "\n".join(files)
         selected_files.update()
     
     pick_files_dialog = ft.FilePicker(on_result=sel_files)
@@ -67,11 +75,13 @@ def main(page:ft.Page):
     progress_text = ft.Text("待機しています。")
     progress_bar = ft.ProgressBar(value=0)
 
+    clear_btn = ft.TextButton("クリア",on_click=clear_files,icon=ft.icons.CLEAR)
+
     upload_btn = ft.FloatingActionButton("アップロード",icon=ft.icons.UPLOAD,on_click=upload)
 
-    open_files_dialog = ft.TextButton("ファイルを選択",icon=ft.icons.FILE_UPLOAD,on_click=lambda _: pick_files_dialog.pick_files(allow_multiple=True,allowed_extensions=["mp3","flac","m4a","ogg","wma"]))
+    open_files_dialog = ft.TextButton("ファイルを追加",icon=ft.icons.ADD,on_click=lambda _: pick_files_dialog.pick_files(allow_multiple=True,allowed_extensions=["mp3","flac","m4a","ogg","wma"]))
 
-    page.add(ft.Row([selected_files,open_files_dialog]),oauth_text,progress_text,progress_bar,upload_btn)
+    page.add(ft.Row([selected_files,ft.Column([open_files_dialog,clear_btn])]),oauth_text,progress_text,progress_bar,upload_btn)
 
 if __name__ == "__main__":
     ft.app(main)
