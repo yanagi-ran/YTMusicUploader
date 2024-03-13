@@ -66,6 +66,12 @@ def main(page:ft.Page):
                 progress_text.update()
                 upload_btn.disabled = False
                 upload_btn.update()
+                if after_clear.value == True:
+                    files.clear()
+                    selected_files.value = "\n".join(files)
+                    selected_files.update()
+                else:
+                    pass
             
             else:
                 progress_text.value = "ファイルが選択されていません"
@@ -75,13 +81,15 @@ def main(page:ft.Page):
     progress_text = ft.Text("待機しています。")
     progress_bar = ft.ProgressBar(value=0)
 
+    after_clear = ft.Checkbox(label="アップロード後にリストをクリア")
+
     clear_btn = ft.TextButton("クリア",on_click=clear_files,icon=ft.icons.CLEAR)
 
     upload_btn = ft.FloatingActionButton("アップロード",icon=ft.icons.UPLOAD,on_click=upload)
 
     open_files_dialog = ft.TextButton("ファイルを追加",icon=ft.icons.ADD,on_click=lambda _: pick_files_dialog.pick_files(allow_multiple=True,allowed_extensions=["mp3","flac","m4a","ogg","wma"]))
 
-    page.add(ft.Row([selected_files,ft.Column([open_files_dialog,clear_btn])]),oauth_text,progress_text,progress_bar,upload_btn)
+    page.add(ft.Row([selected_files,ft.Column([open_files_dialog,clear_btn])]),after_clear,oauth_text,progress_text,progress_bar,upload_btn)
 
 if __name__ == "__main__":
     ft.app(main)
